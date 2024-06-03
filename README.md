@@ -1,70 +1,76 @@
-# tsup-template
+# pm2-ecosystem
 
-Create a JavaScript package that fully supports ESM and CJS - [example]
+Type-safe [PM2] configurations without the `pm2` package - [quick start](#quick-start)
 
-[example]: https://arethetypeswrong.github.io/?p=new-request
+[PM2]: https://pm2.keymetrics.io/
+
+## Justification
+
+PM2 does provide TypeScript types out-of-the box.
+
+```js
+module.exports = {
+  /** @type {import('pm2').StartOptions[]} */
+  apps: [{ name: 'app', script: './app.js' }],
+};
+```
+
+However, `pm2` is not meant to be installed locally.
+
+```shell
+# Reference https://pm2.keymetrics.io/docs/usage/quick-start/
+npm install pm2@latest -g
+yarn global add pm2
+```
+
+Since there is no `@types/pm2` package, use this instead.
 
 ## Quick Start
 
-1. [Use this template] to create a new repository.
-2. Clone the repository and install dependencies.
-3. Write library code in the `/src/index.ts` file.
-4. [Set package data](#set-package-data) in the `package.json` file.
+```shell
+npm i pm2-ecosystem -D
+pnpm i pm2-ecosystem -D
+```
 
-[Use this template]: https://github.com/new?template_name=tsup-template&template_owner=hyunbinseo
+```js
+// Method 1: Using the `defineApp` function
+
+const { defineApp } = require('pm2-ecosystem');
+
+module.exports = {
+  apps: [
+    defineApp({ name: 'app1', script: './app1.js' }),
+    defineApp({ name: 'app2', script: './app2.js' }),
+    // ...
+  ],
+};
+
+// Method 2: Using JSDoc
+
+module.exports = {
+  /** @type {import('pm2-ecosystem').StartOptions[]} */
+  apps: [
+    { name: 'app1', script: './app1.js' },
+    { name: 'app2', script: './app2.js' },
+  ],
+};
+```
+
+## ECMAScript Modules
+
+In a ESM project, the JavaScript configuration file must have the `.cjs` extension.
+
+| Example Filename       | `package.json`       |
+| ---------------------- | -------------------- |
+| `ecosystem.config.js`  | `"type": "commonjs"` |
+| `ecosystem.config.cjs` | `"type": "module"`   |
 
 ```shell
-npm version patch # [<newversion> | major | minor | patch | premajor | ... ]
-npm publish # the package is newly built and linted before it gets published.
-```
+# If the filename is `ecosystem.config.js`
+pm2 start # the filename can be omitted.
+pm2 start ecosystem.config.js
 
-## Set Package Data
-
-Reference the [npm Docs](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) for the full list
-
-```jsonc
-// package.json
-{
-  "name": "name",
-  "description": "description",
-  // ...
-  "keywords": ["keyword"],
-  "author": "author",
-  "license": "license",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/username/project-name.git"
-  },
-  "bugs": {
-    "url": "https://github.com/username/project-name/issues"
-  },
-  "homepage": "https://github.com/username/project-name#readme"
-}
-```
-
-## Subpath Exports
-
-Modules can be exported from files other than `src/index.ts`
-
-```jsonc
-// package.json
-// Requires Node.js >=12
-{
-  // ..
-  "tsup": {
-    // Add a new entry point
-    "entry": ["src/index.ts", "src/nested/index.ts"]
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    // Add subpath export as relative paths
-    "./nested": {
-      "import": "./dist/nested/index.js",
-      "require": "./dist/nested/index.cjs"
-    }
-  }
-}
+# If not, the filename must be specified.
+pm2 start ecosystem.config.cjs
+pm2 start pm2.config.cjs
 ```

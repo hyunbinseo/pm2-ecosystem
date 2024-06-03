@@ -1,25 +1,40 @@
 {
-  "version": "0.0.1",
-  "type": "module",
-  "scripts": {
-    "build": "tsup && publint",
-    "prepublishOnly": "tsup && publint"
-  },
-  "devDependencies": {
-    "publint": "^0.2.7",
-    "tsup": "^8.0.2",
-    "typescript": "^5.4.3"
-  },
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
-    }
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ]
+	"name": "pm2-ecosystem",
+	"description": "Type PM2 configuration files. Use JSDoc or the define-app function.",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"bump": "node index",
+		"prepublishOnly": "tsup && publint"
+	},
+	"devDependencies": {
+		"@types/node": "^20.14.0",
+		"pm2": "^5.4.0",
+		"publint": "^0.2.7",
+		"tsup": "^8.0.2",
+		"typescript": "^5.4.3"
+	},
+	"exports": {
+		".": {
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.js"
+		}
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"author": "Hyunbin Seo",
+	"license": "AGPL-3.0",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hyunbinseo/pm2-ecosystem.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hyunbinseo/pm2-ecosystem/issues"
+	},
+	"homepage": "https://github.com/hyunbinseo/pm2-ecosystem#readme",
+	"packageManager": "pnpm@9.1.4+sha512.9df9cf27c91715646c7d675d1c9c8e41f6fce88246f1318c1aa6a1ed1aeb3c4f032fcdf4ba63cc69c4fe6d634279176b5358727d8f2cc1e65b65f43ce2f8bfb0"
 }
