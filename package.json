@@ -1,7 +1,7 @@
 {
 	"name": "pm2-ecosystem",
 	"description": "Type PM2 configuration files. Use JSDoc or the define-app function.",
-	"version": "5.4.1",
+	"version": "5.4.2",
 	"type": "module",
 	"scripts": {
 		"bump": "node index",
@@ -9,7 +9,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^20.14.0",
-		"pm2": "^5.4.1",
+		"pm2": "^5.4.2",
 		"publint": "^0.2.7",
 		"tsup": "^8.0.2",
 		"typescript": "^5.4.3"
