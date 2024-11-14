@@ -5,7 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"bump": "node index",
-		"prepublishOnly": "tsup && publint"
+		"prepublishOnly": "tsup && publint",
+		"postversion": "git push && git push --tags"
 	},
 	"devDependencies": {
 		"@types/node": "^22.9.0",

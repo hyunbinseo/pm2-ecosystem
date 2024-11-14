@@ -1,9 +1,10 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
+import { env } from 'node:process';
 
-const bump = process.env.npm_lifecycle_event === 'bump';
+const isBumping = env.NODE_RUN_SCRIPT_NAME === 'bump';
 
-if (bump) {
+if (isBumping) {
 	execSync('git checkout main');
 	execSync('git fetch origin');
 	execSync('git reset --hard origin/main');
@@ -29,9 +30,7 @@ writeFileSync(
 		'\n',
 );
 
-if (bump) {
+if (isBumping) {
 	execSync('git add .');
 	execSync(`pnpm version ${version} --force`, { stdio: 'inherit' });
-	execSync('git push');
-	execSync('git push --tags');
 }
