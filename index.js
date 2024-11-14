@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 
 const bump = process.env.npm_lifecycle_event === 'bump';
 
@@ -9,19 +9,24 @@ if (bump) {
 	execSync('git reset --hard origin/main');
 }
 
-execSync(`pnpm add pm2@latest`, { stdio: 'inherit' });
+const response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
+if (!response.ok || !response.redirected) throw new Error();
+
+const version = response.url.replace('https://unpkg.com/pm2@', '').split('/')[0];
 
 const regex = /export interface StartOptions {.+?}(?=\n)/s;
-const matches = readFileSync('node_modules/pm2/types/index.d.ts', 'utf8').match(regex);
-const { version } = JSON.parse(readFileSync('node_modules/pm2/package.json', 'utf8'));
+const type = (await response.text()).match(regex)?.at(0);
 
-if (!matches) throw new Error('StartOptions not found.');
+if (!version || !type) throw new Error();
 
 writeFileSync(
 	'src/index.ts',
-	`// pm2@${version}\n
-${matches[0]}\n
-export const defineApp = (options: StartOptions) => options;\n`
+	`// pm2@${version}` +
+		'\n\n' +
+		type +
+		'\n\n' +
+		'export const defineApp = (options: StartOptions) => options;' +
+		'\n',
 );
 
 if (bump) {
