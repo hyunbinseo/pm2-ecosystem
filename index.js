@@ -1,6 +1,7 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-import { argv } from 'node:process';
+import { argv, exit } from 'node:process';
+import pkg from './package.json' with { type: 'json' };
 
 const isBump = argv[2] === '--bump';
 
@@ -11,9 +12,18 @@ if (isBump) {
 }
 
 const response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
-if (!response.ok || !response.redirected) throw new Error();
+
+if (!response.ok || !response.redirected) {
+	console.error('Failed to fetch package');
+	exit(1);
+}
 
 const version = response.url.replace('https://unpkg.com/pm2@', '').split('/')[0];
+
+if(version === pkg.version) {
+	console.error('Already up to date');
+	exit(1);
+}
 
 const regex = /export interface StartOptions {.+?}(?=\n)/s;
 const type = (await response.text()).match(regex)?.at(0);
