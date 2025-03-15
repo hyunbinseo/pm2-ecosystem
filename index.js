@@ -11,14 +11,13 @@ if (isBump) {
 	execSync('git reset --hard origin/main');
 }
 
-const response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
+const response = await fetch('https://cdn.jsdelivr.net/npm/pm2@latest/types/index.d.ts');
+const version = response.headers.get('x-jsd-version');
 
-if (!response.ok || !response.redirected) {
+if (!response.ok || !version) {
 	console.error('Failed to fetch package');
 	exit(1);
 }
-
-const version = response.url.replace('https://unpkg.com/pm2@', '').split('/')[0];
 
 if(version === pkg.version) {
 	console.error('Already up to date');
