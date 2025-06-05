@@ -1,28 +1,24 @@
-import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-import { argv, exit } from 'node:process';
+import { simpleGit } from 'simple-git';
 import pkg from './package.json' with { type: 'json' };
 
-const isBump = argv[2] === '--bump';
+const git = simpleGit();
 
-if (isBump) {
-	execSync('git checkout main');
-	execSync('git fetch origin');
-	execSync('git reset --hard origin/main');
-}
+await git.checkout('main');
+await git.fetch('origin');
+
+const status = await git.status();
+if (!status.isClean()) throw new Error();
+
+const localCommit = await git.revparse(['HEAD']);
+const remoteCommit = await git.revparse(['origin/main']);
+if (localCommit !== remoteCommit) throw new Error();
 
 const response = await fetch('https://cdn.jsdelivr.net/npm/pm2@latest/types/index.d.ts');
 const version = response.headers.get('x-jsd-version');
 
-if (!response.ok || !version) {
-	console.error('Failed to fetch package');
-	exit(1);
-}
-
-if(version === pkg.version) {
-	console.error('Already up to date');
-	exit(1);
-}
+if (!response.ok || !version) throw new Error();
+if (version === pkg.version) throw new Error();
 
 const regex = /export interface StartOptions {.+?}(?=\n)/s;
 const type = (await response.text()).match(regex)?.at(0);
@@ -39,7 +35,19 @@ writeFileSync(
 		'\n',
 );
 
-if (isBump) {
-	execSync('git add .');
-	execSync(`pnpm version ${version} --force`, { stdio: 'inherit' });
-}
+const updatedPkg = { ...pkg };
+updatedPkg.version = version;
+writeFileSync('package.json', JSON.stringify(updatedPkg, null, '\t') + '\n');
+
+await git.add('.');
+await git.commit(version);
+await git.addTag(`v${version}`);
+await git.push('origin', 'main');
+await git.pushTags('origin');
+
+const url = new URL(pkg.homepage);
+url.pathname = url.pathname + '/releases/new';
+url.search = `tag=v${version}`;
+url.hash = '';
+
+console.log('Create release:', url.toString());
