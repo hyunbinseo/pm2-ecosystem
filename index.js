@@ -14,11 +14,14 @@ const localCommit = await git.revparse(['HEAD']);
 const remoteCommit = await git.revparse(['origin/main']);
 if (localCommit !== remoteCommit) throw new Error();
 
-const response = await fetch('https://cdn.jsdelivr.net/npm/pm2@latest/types/index.d.ts');
-const version = response.headers.get('x-jsd-version');
+let response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
+if (!response.redirected || !response.url) throw new Error();
 
-if (!response.ok || !version) throw new Error();
-if (version === pkg.version) throw new Error();
+const version = response.url.match(/(?<=^https:\/\/unpkg\.com\/pm2@)[\d\.]+/)?.[0];
+if (!version || version === pkg.version) throw new Error();
+
+response = await fetch(response.url);
+if (!response.ok || response.redirected) throw new Error();
 
 const regex = /export interface StartOptions {.+?}(?=\n)/s;
 const type = (await response.text()).match(regex)?.at(0);
