@@ -38,9 +38,11 @@ writeFileSync(
 		'\n',
 );
 
-const updatedPkg = { ...pkg };
-updatedPkg.version = version;
-writeFileSync('package.json', JSON.stringify(updatedPkg, null, '\t') + '\n');
+pkg.version = version;
+writeFileSync('package.json', JSON.stringify(pkg, null, '\t') + '\n');
+
+// NOTE New version is unknown until runtime.
+// Static lifecycle script(s) cannot be used.
 
 await git.add('.');
 await git.commit(version);
@@ -48,9 +50,9 @@ await git.addTag(`v${version}`);
 await git.push('origin', 'main');
 await git.pushTags('origin');
 
-const url = new URL(pkg.homepage);
-url.pathname = url.pathname + '/releases/new';
-url.search = `tag=v${version}`;
-url.hash = '';
+const github = pkg.repository.url.replace(/^git\+|\.git$/g, '');
 
-console.log('Create release:', url.toString());
+console.table({
+	'New Tag': `${github}/releases/tag/v${pkg.version}`,
+	'Create Release': `${github}/releases/new?tag=v${pkg.version}`,
+});
