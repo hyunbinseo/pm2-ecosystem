@@ -1,7 +1,7 @@
 {
 	"name": "pm2-ecosystem",
 	"description": "Type PM2 configuration files. Use JSDoc or the define-app function.",
-	"version": "6.0.8",
+	"version": "6.0.10",
 	"type": "module",
 	"scripts": {
 		"prepack": "tsup && publint"

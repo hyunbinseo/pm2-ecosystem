@@ -1,4 +1,4 @@
-// pm2@6.0.8
+// pm2@6.0.10
 
 export interface StartOptions {
   /**
@@ -142,6 +142,65 @@ export interface StartOptions {
    * @example 'staging'
    */
   namespace?: string;
+  /**
+   * (Default: false) Exponential backoff restart delay in milliseconds.
+   * When enabled, PM2 will progressively increase restart delays after failures.
+   */
+  exp_backoff_restart_delay?: number;
+  /**
+   * Timeout for application to be ready after reload (in milliseconds).
+   */
+  listen_timeout?: number;
+  /**
+   * (Default: false) If true, shutdown the process using process.send('shutdown') instead of process.kill().
+   */
+  shutdown_with_message?: boolean;
+  /**
+   * Environment variable name that gets incremented for each cluster instance.
+   */
+  increment_var?: string;
+  /**
+   * Name of the environment variable holding the instance ID.
+   * @default 'NODE_APP_INSTANCE'
+   */
+  instance_var?: string;
+  /**
+   * Filter out specific environment variables from the process.
+   * Can be true to filter all, or array/string of specific variables.
+   */
+  filter_env?: boolean | string | string[];
+  /**
+   * (Default: false) Disable logs output.
+   */
+  disable_logs?: boolean;
+  /**
+   * Log output type.
+   */
+  log_type?: string;
+  /**
+   * (Default: false) Enable container mode.
+   */
+  container?: boolean;
+  /**
+   * (Default: false) Distribution mode for Docker.
+   */
+  dist?: boolean;
+  /**
+   * Docker image name.
+   */
+  image_name?: string;
+  /**
+   * Node.js version for Docker container.
+   */
+  node_version?: string;
+  /**
+   * (Default: false) Fresh install for Docker.
+   */
+  fresh?: boolean;
+  /**
+   * (Default: false) Docker daemon mode.
+   */
+  dockerdaemon?: boolean;
 }
 
 export const defineApp = (options: StartOptions) => options;
