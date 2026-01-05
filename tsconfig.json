@@ -1,29 +1,18 @@
 {
+	"include": ["*", "src/**/*"],
 	"compilerOptions": {
-		// Target is used by tsup and is `node14` if unspecified.
-		// Reference https://tsup.egoist.dev/#target-environment
-		// Reference https://www.typescriptlang.org/tsconfig#target
-
-		"allowJs": true,
-		"checkJs": true,
-		"noEmit": true,
-		"skipLibCheck": true,
-
-		// Modules
+		"strict": true,
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
-		"resolveJsonModule": true,
 
-		// Type Checking
-		"strict": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noUncheckedIndexedAccess": true,
-		"exactOptionalPropertyTypes": true,
-		"allowUnreachableCode": false,
-		"allowUnusedLabels": false
-	}
+		// JavaScript
+		"allowJs": true,
+		"checkJs": true,
+		"outDir": "dist",
+
+		// TypeScript
+		"noEmit": true,
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true,
+	},
 }
