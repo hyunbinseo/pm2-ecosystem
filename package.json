@@ -4,9 +4,11 @@
 	"version": "6.0.14",
 	"type": "module",
 	"scripts": {
-		"prepack": "tsdown && publint"
+		"prepack": "tsdown",
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@arethetypeswrong/core": "^0.18.2",
 		"@types/node": "^24.12.2",
 		"prettier": "^3.8.3",
 		"publint": "^0.3.18",
@@ -14,11 +16,15 @@
 		"tsdown": "^0.21.9",
 		"typescript": "^5.9.3"
 	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.cts",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist"
