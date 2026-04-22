@@ -4,9 +4,8 @@
 	"quoteProps": "consistent",
 	"trailingComma": "all",
 	"printWidth": 100,
-	"endOfLine": "auto",
 	"overrides": [
 		{ "files": "*.jsonc", "options": { "trailingComma": "none" } },
-		{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } },
+		{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } }
 	]
 }

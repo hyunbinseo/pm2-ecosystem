@@ -18,7 +18,7 @@ if (localCommit !== remoteCommit) throw new Error();
 let response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
 if (!response.redirected || !response.url) throw new Error();
 
-const version = response.url.match(/(?<=^https:\/\/unpkg\.com\/pm2@)[\d\.]+/)?.[0];
+const version = response.url.match(/(?<=^https:\/\/unpkg\.com\/pm2@)[\d.]+/)?.[0];
 if (!version || version === pkg.version) throw new Error();
 
 response = await fetch(response.url);
