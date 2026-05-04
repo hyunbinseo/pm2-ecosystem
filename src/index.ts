@@ -1,4 +1,4 @@
-// pm2@7.0.0
+// pm2@7.0.1
 
 export interface StartOptions {
   /**
@@ -70,6 +70,10 @@ export interface StartOptions {
    * Uses human-friendly suffixes: ‘K’ for kilobytes, ‘M’ for megabytes, ‘G’ for gigabytes’, etc. Eg “150M”.
    */
   max_memory_restart?: number | string;
+  /**
+   * Shortcut to inject a PORT environment variable into the started process.
+   */
+  port?: number;
   /**
    * Arguments to pass to the interpreter
    */
