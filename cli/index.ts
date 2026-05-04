@@ -1,7 +1,8 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { simpleGit } from 'simple-git';
-import pkg from './package.json' with { type: 'json' };
+import pkg from '../package.json' with { type: 'json' };
+import { root } from './utilities.ts';
 
 const git = simpleGit();
 
@@ -30,7 +31,7 @@ const type = (await response.text()).match(regex)?.at(0);
 if (!version || !type) throw new Error();
 
 writeFileSync(
-	resolve(import.meta.dirname, './src/index.ts'),
+	resolve(root, './src/index.ts'),
 	`// pm2@${version}` +
 		'\n\n' +
 		type +

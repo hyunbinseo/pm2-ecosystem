@@ -4,6 +4,7 @@
 	"version": "7.0.0",
 	"type": "module",
 	"scripts": {
+		"bump": "node cli/index.ts",
 		"prepack": "tsdown",
 		"format": "prettier --write ."
 	},
