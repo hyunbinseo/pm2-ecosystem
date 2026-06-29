@@ -1,4 +1,4 @@
-// pm2@7.0.1
+// pm2@7.0.2
 
 export interface StartOptions {
   /**
