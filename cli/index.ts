@@ -35,7 +35,7 @@ const typeRes = await fetch(`https://unpkg.com/pm2@${npm.version}/types/index.d.
 if (!typeRes.ok) throw new Error(`HTTP ${typeRes.status} - ${typeRes.url}`);
 
 const startOptions = (await typeRes.text())
-	.match(/export interface StartOptions {.+?}(?=\n)/s)
+	.match(/^export interface StartOptions \{[\s\S]+?^}$/m)
 	?.at(0);
 
 if (!startOptions) throw new Error('Content not found');
