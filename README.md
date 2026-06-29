@@ -10,8 +10,8 @@ PM2 does provide TypeScript types out-of-the box.
 
 ```js
 module.exports = {
-  /** @type {import('pm2').StartOptions[]} */
-  apps: [{ name: 'app', script: './app.js' }],
+	/** @type {import('pm2').StartOptions[]} */
+	apps: [{ name: 'app', script: './app.js' }],
 };
 ```
 
@@ -38,21 +38,21 @@ pnpm i pm2-ecosystem -D
 const { defineApp } = require('pm2-ecosystem');
 
 module.exports = {
-  apps: [
-    defineApp({ name: 'app1', script: './app1.js' }),
-    defineApp({ name: 'app2', script: './app2.js' }),
-    // ...
-  ],
+	apps: [
+		defineApp({ name: 'app1', script: './app1.js' }),
+		defineApp({ name: 'app2', script: './app2.js' }),
+		// ...
+	],
 };
 
 // Method 2: Using JSDoc
 
 module.exports = {
-  /** @type {import('pm2-ecosystem').StartOptions[]} */
-  apps: [
-    { name: 'app1', script: './app1.js' },
-    { name: 'app2', script: './app2.js' },
-  ],
+	/** @type {import('pm2-ecosystem').StartOptions[]} */
+	apps: [
+		{ name: 'app1', script: './app1.js' },
+		{ name: 'app2', script: './app2.js' },
+	],
 };
 ```
 

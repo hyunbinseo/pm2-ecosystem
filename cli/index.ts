@@ -1,5 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { format } from 'oxfmt';
 import { simpleGit } from 'simple-git';
 import { check, object, parse, pipe, string } from 'valibot';
 import pkg from '../package.json' with { type: 'json' };
@@ -41,12 +42,14 @@ if (!startOptions) throw new Error('Content not found');
 
 writeFileSync(
 	resolve(root, './src/index.ts'),
-	`// pm2@${npm.version}` +
-		'\n\n' +
-		startOptions +
-		'\n\n' +
-		'export const defineApp = (options: StartOptions) => options;' +
-		'\n',
+	await format(
+		'.ts',
+		`// pm2@${npm.version}
+
+export const defineApp = (options: StartOptions) => options;
+
+${startOptions}`,
+	).then((res) => res.code),
 );
 
 pkg.version = npm.version;
