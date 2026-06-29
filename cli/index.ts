@@ -1,6 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { simpleGit } from 'simple-git';
+import { check, object, parse, pipe, string } from 'valibot';
 import pkg from '../package.json' with { type: 'json' };
 import { root } from './utilities.ts';
 
@@ -16,39 +17,49 @@ const localCommit = await git.revparse(['HEAD']);
 const remoteCommit = await git.revparse(['origin/main']);
 if (localCommit !== remoteCommit) throw new Error();
 
-let response = await fetch('https://unpkg.com/pm2/types/index.d.ts');
-if (!response.redirected || !response.url) throw new Error();
+const metaRes = await fetch('https://registry.npmjs.org/pm2/latest');
+if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} - ${metaRes.url}`);
 
-const version = response.url.match(/(?<=^https:\/\/unpkg\.com\/pm2@)[\d.]+/)?.[0];
-if (!version || version === pkg.version) throw new Error();
+const npm = parse(
+	pipe(
+		object({ version: string() }),
+		check((meta) => meta.version !== pkg.version, 'No update available'),
+	),
+	await metaRes.json(),
+);
 
-response = await fetch(response.url);
-if (!response.ok || response.redirected) throw new Error();
+const typeRes = await fetch(`https://unpkg.com/pm2@${npm.version}/types/index.d.ts`).then((res) =>
+	res.ok
+		? res
+		: fetch(`https://raw.githubusercontent.com/Unitech/pm2/v${npm.version}/types/index.d.ts`),
+);
+
+if (!typeRes.ok) throw new Error(`HTTP ${typeRes.status} - ${typeRes.url}`);
 
 const regex = /export interface StartOptions {.+?}(?=\n)/s;
-const type = (await response.text()).match(regex)?.at(0);
+const startOptions = (await typeRes.text()).match(regex)?.at(0);
 
-if (!version || !type) throw new Error();
+if (!startOptions) throw new Error();
 
 writeFileSync(
 	resolve(root, './src/index.ts'),
-	`// pm2@${version}` +
+	`// pm2@${npm.version}` +
 		'\n\n' +
-		type +
+		startOptions +
 		'\n\n' +
 		'export const defineApp = (options: StartOptions) => options;' +
 		'\n',
 );
 
-pkg.version = version;
+pkg.version = npm.version;
 writeFileSync('package.json', JSON.stringify(pkg, null, '\t') + '\n');
 
 // NOTE New version is unknown until runtime.
 // Static lifecycle script(s) cannot be used.
 
 await git.add('.');
-await git.commit(version);
-await git.addTag(`v${version}`);
+await git.commit(npm.version);
+await git.addTag(`v${npm.version}`);
 await git.push('origin', 'main');
 await git.pushTags('origin');
 

@@ -15,7 +15,8 @@
 		"publint": "^0.3.21",
 		"simple-git": "^3.36.0",
 		"tsdown": "^0.22.3",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"valibot": "^1.4.1"
 	},
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
