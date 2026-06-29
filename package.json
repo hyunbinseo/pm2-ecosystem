@@ -9,12 +9,12 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@arethetypeswrong/core": "^0.18.2",
-		"@types/node": "^24.12.2",
-		"prettier": "^3.8.3",
-		"publint": "^0.3.18",
+		"@arethetypeswrong/core": "^0.18.4",
+		"@types/node": "^24.13.2",
+		"prettier": "^3.9.1",
+		"publint": "^0.3.21",
 		"simple-git": "^3.36.0",
-		"tsdown": "^0.21.10",
+		"tsdown": "^0.22.3",
 		"typescript": "^6.0.3"
 	},
 	"main": "./dist/index.cjs",
@@ -40,5 +40,5 @@
 		"url": "https://github.com/hyunbinseo/pm2-ecosystem/issues"
 	},
 	"homepage": "https://github.com/hyunbinseo/pm2-ecosystem#readme",
-	"packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8"
+	"packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b"
 }
