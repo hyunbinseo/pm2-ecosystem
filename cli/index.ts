@@ -11,11 +11,8 @@ await git.checkout('main');
 await git.fetch('origin');
 
 const status = await git.status();
-if (!status.isClean()) throw new Error();
-
-const localCommit = await git.revparse(['HEAD']);
-const remoteCommit = await git.revparse(['origin/main']);
-if (localCommit !== remoteCommit) throw new Error();
+if (!status.isClean()) throw new Error('Working tree is not clean');
+if (status.ahead || status.behind) throw new Error('Mismatch with origin/main');
 
 const metaRes = await fetch('https://registry.npmjs.org/pm2/latest');
 if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} - ${metaRes.url}`);
@@ -36,10 +33,11 @@ const typeRes = await fetch(`https://unpkg.com/pm2@${npm.version}/types/index.d.
 
 if (!typeRes.ok) throw new Error(`HTTP ${typeRes.status} - ${typeRes.url}`);
 
-const regex = /export interface StartOptions {.+?}(?=\n)/s;
-const startOptions = (await typeRes.text()).match(regex)?.at(0);
+const startOptions = (await typeRes.text())
+	.match(/export interface StartOptions {.+?}(?=\n)/s)
+	?.at(0);
 
-if (!startOptions) throw new Error();
+if (!startOptions) throw new Error('Content not found');
 
 writeFileSync(
 	resolve(root, './src/index.ts'),
@@ -54,8 +52,7 @@ writeFileSync(
 pkg.version = npm.version;
 writeFileSync('package.json', JSON.stringify(pkg, null, '\t') + '\n');
 
-// NOTE New version is unknown until runtime.
-// Static lifecycle script(s) cannot be used.
+// NOTE `pnpm version` command requires version to be predefined
 
 await git.add('.');
 await git.commit(npm.version);
