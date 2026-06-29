@@ -1,7 +1,7 @@
 {
 	"name": "pm2-ecosystem",
 	"description": "Type PM2 configuration files. Use JSDoc or the define-app function.",
-	"version": "7.0.2",
+	"version": "7.0.3",
 	"type": "module",
 	"scripts": {
 		"bump": "node cli/index.ts",
