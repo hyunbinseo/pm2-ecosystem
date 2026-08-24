@@ -1,8 +1,9 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { format } from 'oxfmt';
+import { format, type FormatConfig } from 'oxfmt';
 import { simpleGit } from 'simple-git';
 import { check, object, parse, pipe, string } from 'valibot';
+import formatOptions from '../.oxfmtrc.json' with { type: 'json' };
 import pkg from '../package.json' with { type: 'json' };
 import { root } from './utilities.ts';
 
@@ -43,12 +44,13 @@ if (!startOptions) throw new Error('Content not found');
 writeFileSync(
 	resolve(root, './src/index.ts'),
 	await format(
-		'.ts',
+		'index.ts',
 		`// pm2@${npm.version}
 
 export const defineApp = (options: StartOptions) => options;
 
 ${startOptions}`,
+		formatOptions as FormatConfig,
 	).then((res) => res.code),
 );
 
