@@ -1,4 +1,6 @@
-// pm2@7.0.3
+// pm2@7.0.4
+
+export const defineApp = (options: StartOptions) => options;
 
 export interface StartOptions {
 	/**
@@ -206,5 +208,3 @@ export interface StartOptions {
 	 */
 	dockerdaemon?: boolean;
 }
-
-export const defineApp = (options: StartOptions) => options;

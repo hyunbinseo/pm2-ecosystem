@@ -1,6 +1,6 @@
 {
 	"name": "pm2-ecosystem",
-	"version": "7.0.3",
+	"version": "7.0.4",
 	"description": "Type PM2 configuration files. Use JSDoc or the define-app function.",
 	"homepage": "https://github.com/hyunbinseo/pm2-ecosystem#readme",
 	"bugs": {
