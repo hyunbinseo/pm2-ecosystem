@@ -1,2 +1,2 @@
-onlyBuiltDependencies:
-  - esbuild
+update:
+  githubActions: true
