@@ -1,4 +1,4 @@
-// pm2@7.0.4
+// pm2@7.1.0
 
 export const defineApp = (options: StartOptions) => options;
 
