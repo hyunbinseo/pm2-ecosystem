@@ -41,7 +41,7 @@
 		"oxlint": "^1.79.0",
 		"oxlint-tsgolint": "^7.0.2001",
 		"publint": "^0.3.24",
-		"simple-git": "^3.36.0",
+		"simple-git": "^4.0.1",
 		"tsdown": "^0.22.14",
 		"typescript": "^7.0.2",
 		"valibot": "^1.4.2"
