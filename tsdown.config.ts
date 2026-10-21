@@ -8,5 +8,5 @@ export default defineConfig({
 	target: false,
 	exports: true,
 	publint: true,
-	attw: true,
+	attw: { profile: 'strict' },
 });
